@@ -1,0 +1,79 @@
+1)SELECT Client.prenom, Client.courriel
+  FROM Client;
+
+2)SELECT *
+  FROM Livre
+  WHERE Livre.annee = 2019;
+
+3)SELECT Auteur.nom, Auteur.prenom
+  FROM Auteur
+  WHERE nom LIKE 'D%r';
+ 
+4)SELECT DISTINCT MIN(Livre.annee)
+  FROM Livre
+  WHERE Livre.serie = 'Astérix';
+  
+5)SELECT Livre.titre
+  FROM Livre
+  JOIN Achete ON Achete.isbn = Livre.isbn
+  WHERE Achete.annee = 2019;
+  
+6)SELECT COUNT(Achete.idc)
+  FROM Achete
+  JOIN Client ON Client.idc = Achete.idC
+  WHERE Client.prenom = 'Charles';
+  
+7)SELECT AVG(Livre.prix)
+  FROM Achete
+  JOIN Client ON Client.idc = Achete.idC
+  JOIN Livre ON Achete.isbn = Livre.isbn
+  WHERE Client.prenom = 'Charles';
+  
+8)SELECT SUM(Livre.prix)
+  FROM Achete
+  JOIN Client ON Client.idc = Achete.idC
+  JOIN Livre ON Achete.isbn = Livre.isbn
+  WHERE Client.prenom = 'Alice' AND Achete.annee = 2019;
+  
+9)SELECT DISTINCT Auteur.ida || ' ' || Auteur.nom || ' ' || Auteur.prenom
+  FROM Auteur
+  JOIN Participe ON Participe.idA = Auteur.idA
+  JOIN Livre ON Livre.isbn = Participe.isbn
+  WHERE Livre.serie = 'Astérix'
+  ORDER BY Auteur.nom;
+  
+10)SELECT Livre.titre, Livre.serie
+  FROM Livre
+  WHERE Livre.annee = (SELECT MAX(Livre.annee)
+		       FROM Livre);
+		       
+11)a)SELECT DISTINCT Auteur.idA
+     FROM Auteur
+     JOIN Participe ON Participe.idA = Auteur.idA
+     JOIN Livre ON Livre.isbn = Participe.isbn
+     WHERE Livre.serie = 'XIII';
+  
+11)b)SELECT DISTINCT Auteur.nom, Auteur.prenom
+     FROM Auteur
+     JOIN Participe ON Participe.idA = Auteur.idA
+     JOIN Livre ON Livre.isbn = Participe.isbn
+     WHERE Livre.serie = 'XIII' AND Auteur.idA IN (SELECT DISTINCT Auteur.idA
+     			  			   FROM Auteur
+     			  			   JOIN Participe ON Participe.idA = Auteur.idA
+     			  			   JOIN Livre ON Livre.isbn = Participe.isbn
+     			  			   WHERE Livre.serie = 'Blake et Mortimer');
+     			  			   
+12)SELECT DISTINCT Livre.serie, Livre.titre
+   FROM Livre
+   JOIN Achete ON Achete.isbn = Livre.isbn
+   JOIN Client ON Client.idC = Achete.idC
+   WHERE Client.prenom = 'Alice' AND Livre.titre IN (SELECT DISTINCT Livre.titre
+						     FROM Livre
+   						     JOIN Achete ON Achete.isbn = Livre.isbn
+   					             JOIN Client ON Client.idC = Achete.idC
+   					             WHERE Client.prenom = 'Bob');
+
+
+
+
+
